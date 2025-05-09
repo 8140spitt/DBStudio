@@ -4,16 +4,16 @@ import { sql } from "drizzle-orm"
 
 export const credentials = mysqlTable("credentials", {
 	id: bigint({ mode: "number", unsigned: true }).autoincrement().notNull(),
-	peopleId: bigint("people_id", { mode: "number", unsigned: true }).notNull().references(() => people.id),
+	userId: bigint("user_id", { mode: "number", unsigned: true }).notNull().references(() => users.id),
 	credentialType: varchar("credential_type", { length: 255 }).notNull(),
 	credentialValue: varchar("credential_value", { length: 255 }).notNull(),
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow(),
-},
-	(table) => [
-		index("idx_credentials_people_id").on(table.peopleId),
-		primaryKey({ columns: [table.id], name: "credentials_id" }),
-	]);
+}, (table) => [
+	index("idx_credentials_user_id").on(table.userId),
+	primaryKey({ columns: [table.id], name: "credentials_id" }),
+]);
+
 
 export const databases = mysqlTable("databases", {
 	id: bigint({ mode: "number", unsigned: true }).autoincrement().notNull(),
@@ -143,3 +143,16 @@ export const workspaces = mysqlTable("workspaces", {
 	(table) => [
 		primaryKey({ columns: [table.id], name: "workspaces_id" }),
 	]);
+
+
+export type Credentials = typeof credentials
+export type Databases = typeof databases
+export type DbConfigs = typeof dbConfigs
+export type People = typeof people
+export type ProjectMembers = typeof projectMembers
+export type Projects = typeof projects
+export type UserSessions = typeof userSessions
+export type UserVerifications = typeof userVerifications
+export type Users = typeof users
+export type WorkspaceMembers = typeof workspaceMembers
+export type Workspaces = typeof workspaces

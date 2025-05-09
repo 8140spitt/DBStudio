@@ -62,7 +62,7 @@ export class MySQLAdapter implements DBAdapter {
 
     async getTableColumns(table: string): Promise<TableColumn[]> {
         const [rows]: MySQLQueryResponse = await this.connection!.query(
-            `SELECT c.column_name, c.data_type, c.is_nullable, c.column_default as default,
+            `SELECT c.column_name, c.data_type, c.is_nullable, c.column_default as \`default\`,
               k.constraint_name, k.referenced_table_name, k.referenced_column_name
        FROM information_schema.columns c
        LEFT JOIN information_schema.key_column_usage k
