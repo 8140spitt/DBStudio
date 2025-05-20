@@ -36,6 +36,30 @@ export const userProfiles = mysqlTable('user_profiles', {
 	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
 });
 
+export const userProfilesIndexes = mysqlTable('user_profiles_indexes', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
+	profileField: varchar('profile_field', { length: 255 }).notNull(),
+	profileValue: varchar('profile_value', { length: 255 }).notNull(),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
+}, (table) => ({
+	idx_user_id: index('idx_up_uid').on(table.userId),
+	fk_user_id: foreignKey({ name: 'fk_up_uid', columns: [table.userId], foreignColumns: [users.id] }),
+}));
+
+// user_roles
+export const userRoles = mysqlTable('user_roles', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
+	role: varchar('role', { length: 255 }).notNull(),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
+}, (table) => ({
+	idx_user_id: index('idx_ur_uid').on(table.userId),
+	fk_user_id: foreignKey({ name: 'fk_ur_uid', columns: [table.userId], foreignColumns: [users.id] }),
+}));
+
 
 // credentials
 export const credentials = mysqlTable('credentials', {
