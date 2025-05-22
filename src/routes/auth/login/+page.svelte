@@ -1,27 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
-	onMount(() => {
-		// Focus the email input field when the component mounts
-		const emailInput = document.getElementById('email');
-		if (emailInput) {
-			emailInput.focus();
-		}
-	});
-
-	// Function to handle form submission
-	async function handleSubmit(event: Event) {
-		event.preventDefault(); // Prevent the default form submission
-
-		const form = event.target as HTMLFormElement;
-		const formData = new FormData(form);
-		const email = formData.get('email') as string;
-		const password = formData.get('password') as string;
-
-		// Perform login logic here (e.g., send a request to the server)
-		console.log('Email:', email);
-		console.log('Password:', password);
-	}
+	let { data, form } = $props();
+	let user: { id: number | undefined; username: string | undefined; password: string | undefined } =
+		$state({
+			id: form?.user?.id ?? undefined,
+			username: form?.user?.username ?? undefined,
+			password: undefined
+		});
 
 	// Function to handle password visibility toggle
 	function togglePasswordVisibility() {
@@ -36,8 +21,6 @@
 			passwordToggle.textContent = 'Show Password';
 		}
 	}
-
-	// Function to handle form submission
 </script>
 
 <svelte:head>
@@ -46,9 +29,12 @@
 
 <div class="login-container">
 	<h2>Login</h2>
-	<form on:submit={handleSubmit}>
+	<form method="POST" action="?/login">
+		{#if form?.success === false}
+			<div class="error-message">{form?.message}</div>
+		{/if}
 		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" required />
+		<input type="text" id="email" name="username" required />
 
 		<label for="password">Password:</label>
 		<div class="password-toggle">
@@ -62,12 +48,6 @@
 
 		<div class="forgot-password">
 			<a href="/auth/forgot-password">Forgot Password?</a>
-		</div>
-		<div class="error-message hidden" id="error-message">Invalid email or password.</div>
-		<div class="success-message hidden" id="success-message">Login successful!</div>
-		<div class="loading hidden" id="loading">
-			<img src="/loading.gif" alt="Loading..." />
-			<span>Loading...</span>
 		</div>
 	</form>
 </div>

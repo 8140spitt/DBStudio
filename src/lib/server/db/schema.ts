@@ -1,4 +1,3 @@
-import { create } from 'domain';
 import {
 	mysqlTable,
 	bigint,
@@ -10,8 +9,6 @@ import {
 	json,
 	unique
 } from 'drizzle-orm/mysql-core';
-
-
 
 // users
 export const users = mysqlTable('users', {
@@ -32,8 +29,8 @@ export const userProfiles = mysqlTable('user_profiles', {
 	middleName: varchar('middle_name', { length: 255 }).default(''),
 	lastName: varchar('last_name', { length: 255 }).notNull(),
 	bio: text('bio').default(''),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
+	avatar: varchar('avatar', { length: 255 }).default(''),
+	email: varchar('email', { length: 255 }).notNull(),
 });
 
 export const userProfilesIndexes = mysqlTable('user_profiles_indexes', {
@@ -41,8 +38,6 @@ export const userProfilesIndexes = mysqlTable('user_profiles_indexes', {
 	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
 	profileField: varchar('profile_field', { length: 255 }).notNull(),
 	profileValue: varchar('profile_value', { length: 255 }).notNull(),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
 }, (table) => ({
 	idx_user_id: index('idx_up_uid').on(table.userId),
 	fk_user_id: foreignKey({ name: 'fk_up_uid', columns: [table.userId], foreignColumns: [users.id] }),
@@ -53,8 +48,6 @@ export const userRoles = mysqlTable('user_roles', {
 	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
 	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
 	role: varchar('role', { length: 255 }).notNull(),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
 }, (table) => ({
 	idx_user_id: index('idx_ur_uid').on(table.userId),
 	fk_user_id: foreignKey({ name: 'fk_ur_uid', columns: [table.userId], foreignColumns: [users.id] }),
@@ -62,29 +55,16 @@ export const userRoles = mysqlTable('user_roles', {
 
 
 // credentials
-export const credentials = mysqlTable('credentials', {
+export const userCredentials = mysqlTable('credentials', {
 	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
 	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
-	credentialType: varchar('credential_type', { length: 255 }).notNull(),
+	credentialType: varchar('credential_type', { length: 255 }).notNull().default('password'),
 	credentialValue: varchar('credential_value', { length: 255 }).notNull(),
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
 }, (table) => ({
 	idx_user_id: index('idx_cred_uid').on(table.userId),
 	fk_user_id: foreignKey({ name: 'fk_cred_uid', columns: [table.userId], foreignColumns: [users.id] }),
-}));
-
-// user_sessions
-export const userSessions = mysqlTable('user_sessions', {
-	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
-	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
-	sessionToken: varchar('session_token', { length: 255 }).notNull(),
-	expires: timestamp('expires').notNull(),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
-}, (table) => ({
-	idx_user_id: index('idx_usess_uid').on(table.userId),
-	fk_user_id: foreignKey({ name: 'fk_usess_uid', columns: [table.userId], foreignColumns: [users.id] }),
 }));
 
 // user_verifications
@@ -99,6 +79,19 @@ export const userVerifications = mysqlTable('user_verifications', {
 }, (table) => ({
 	idx_user_id: index('idx_usver_uid').on(table.userId),
 	fk_user_id: foreignKey({ name: 'fk_usver_uid', columns: [table.userId], foreignColumns: [users.id] }),
+}));
+
+// user_sessions
+export const userSessions = mysqlTable('user_sessions', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	userId: bigint('user_id', { mode: 'number', unsigned: true }).notNull(),
+	sessionToken: varchar('session_token', { length: 255 }).notNull(),
+	expires: timestamp('expires').notNull(),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
+}, (table) => ({
+	idx_user_id: index('idx_usess_uid').on(table.userId),
+	fk_user_id: foreignKey({ name: 'fk_usess_uid', columns: [table.userId], foreignColumns: [users.id] }),
 }));
 
 // workspaces
@@ -606,31 +599,10 @@ export const metaRegistry = mysqlTable('meta_registry', {
 	fk_ws: foreignKey({ name: 'fk_mr_ws', columns: [table.workspaceId], foreignColumns: [workspaces.id] }),
 }));
 
-export type DbSchema = typeof dbSchemas;
-export type DbSchemaTable = typeof dbSchemaTables;
-export type DbSchemaTableColumn = typeof dbTableColumns;
-export type DbSchemaTableIndex = typeof dbTableIndexes;
-export type DbSchemaTableForeignKey = typeof dbTableForeignKeys;
-export type DbSchemaTableTrigger = typeof dbTableTriggers;
-export type DbSchemaView = typeof dbSchemaViews;
-export type DbSchemaProcedure = typeof dbSchemaProcedures;
-export type DbSchemaTableCheck = typeof dbSchemaTableChecks;
-export type DbRole = typeof dbRoles;
-export type DbRoleAssignment = typeof dbRoleAssignments;
-export type DbMigration = typeof dbMigrations;
-export type DbQueryLog = typeof dbQueryLogs;
-export type DbQueryError = typeof dbQueryErrors;
-export type DbQueryResult = typeof dbQueryResults;
-export type DbUserActivity = typeof dbUserActivity;
-export type DbSchemaExport = typeof dbSchemaExports;
-export type DbPrivilege = typeof dbPrivileges;
-export type userProfiles = typeof userProfiles;
-export type userSessions = typeof userSessions;
-export type userVerifications = typeof userVerifications;
 export type Users = typeof users;
-export type Credentials = typeof credentials;
-export type UserSessions = typeof userSessions;
+export type UserCredentials = typeof userCredentials;
 export type UserVerifications = typeof userVerifications;
+export type UserSessions = typeof userSessions;
 export type Workspaces = typeof workspaces;
 export type WorkspaceMembers = typeof workspaceMembers;
 export type Projects = typeof projects;
@@ -646,9 +618,20 @@ export type DbUserPermissions = typeof dbUserPermissions;
 export type DbSchemas = typeof dbSchemas;
 export type DbSchemaTables = typeof dbSchemaTables;
 export type DbTableColumns = typeof dbTableColumns;
+export type DbTableRows = typeof dbTableRows;
 export type DbTableIndexes = typeof dbTableIndexes;
 export type DbTableForeignKeys = typeof dbTableForeignKeys;
 export type DbTableTriggers = typeof dbTableTriggers;
 export type DbSchemaViews = typeof dbSchemaViews;
 export type DbSchemaProcedures = typeof dbSchemaProcedures;
+export type DbSchemaTableChecks = typeof dbSchemaTableChecks;
+export type DbRoles = typeof dbRoles;
+export type DbRoleAssignments = typeof dbRoleAssignments;
+export type DbMigrations = typeof dbMigrations;
+export type DbQueryLogs = typeof dbQueryLogs;
+export type DbQueryErrors = typeof dbQueryErrors;
+export type DbQueryResults = typeof dbQueryResults;
+export type DbUserActivity = typeof dbUserActivity;
+export type DbSchemaExports = typeof dbSchemaExports;
+export type DbPrivileges = typeof dbPrivileges;
 export type MetaRegistry = typeof metaRegistry;
