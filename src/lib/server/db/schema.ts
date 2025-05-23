@@ -599,6 +599,142 @@ export const metaRegistry = mysqlTable('meta_registry', {
 	fk_ws: foreignKey({ name: 'fk_mr_ws', columns: [table.workspaceId], foreignColumns: [workspaces.id] }),
 }));
 
+// Logical tables
+export const metaTables = mysqlTable('meta_tables', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	databaseId: bigint('database_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }).notNull(),
+	comment: text('comment'),
+	metadata: json('metadata'),
+	isDeployed: bigint('is_deployed', { unsigned: true, mode: 'number' }).default(0),
+	deployedAt: timestamp('deployed_at'),
+	createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+	idx_dbid: index('idx_mtab_dbid').on(table.databaseId),
+}));
+
+// Columns in each logical table
+export const metaColumns = mysqlTable('meta_columns', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	tableId: bigint('table_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }).notNull(),
+	type: varchar('type', { length: 100 }).notNull(),
+	length: bigint('length', { unsigned: true, mode: 'number' }),
+	isNullable: bigint('is_nullable', { unsigned: true, mode: 'number' }).default(1),
+	isPrimaryKey: bigint('is_primary_key', { unsigned: true, mode: 'number' }).default(0),
+	isUnique: bigint('is_unique', { unsigned: true, mode: 'number' }).default(0),
+	defaultValue: varchar('default_value', { length: 255 }),
+	metadata: json('metadata'),
+	comment: text('comment'),
+	createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+	idx_table_id: index('idx_mcol_tid').on(table.tableId),
+}));
+
+// Constraints (PK, FK, Unique, Check)
+export const metaConstraints = mysqlTable('meta_constraints', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	tableId: bigint('table_id', { unsigned: true, mode: 'number' }).notNull(),
+	type: varchar('type', { length: 50 }).notNull(),
+	name: varchar('name', { length: 255 }),
+	columns: varchar('columns', { length: 255 }),
+	referenceTable: varchar('reference_table', { length: 255 }),
+	referenceColumns: varchar('reference_columns', { length: 255 }),
+	onDelete: varchar('on_delete', { length: 32 }),
+	onUpdate: varchar('on_update', { length: 32 }),
+	expression: varchar('expression', { length: 255 }),
+	metadata: json('metadata'),
+}, (table) => ({
+	idx_table_id: index('idx_mconst_tid').on(table.tableId),
+}));
+
+// Indexes
+export const metaIndexes = mysqlTable('meta_indexes', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	tableId: bigint('table_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }).notNull(),
+	columns: varchar('columns', { length: 255 }).notNull(),
+	isUnique: bigint('is_unique', { unsigned: true, mode: 'number' }).default(0),
+	type: varchar('type', { length: 32 }),
+	metadata: json('metadata'),
+}, (table) => ({
+	idx_table_id: index('idx_midx_tid').on(table.tableId),
+}));
+
+// Views
+export const metaViews = mysqlTable('meta_views', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	databaseId: bigint('database_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }).notNull(),
+	definition: text('definition').notNull(),
+	metadata: json('metadata'),
+}, (table) => ({
+	idx_dbid: index('idx_mview_dbid').on(table.databaseId),
+}));
+
+// Procedures
+export const metaProcedures = mysqlTable('meta_procedures', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	databaseId: bigint('database_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }).notNull(),
+	parameters: varchar('parameters', { length: 255 }),
+	body: text('body').notNull(),
+	metadata: json('metadata'),
+}, (table) => ({
+	idx_dbid: index('idx_mproc_dbid').on(table.databaseId),
+}));
+
+// Triggers
+export const metaTriggers = mysqlTable('meta_triggers', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	databaseId: bigint('database_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }).notNull(),
+	event: varchar('event', { length: 64 }).notNull(),
+	timing: varchar('timing', { length: 32 }).notNull(),
+	tableName: varchar('table_name', { length: 255 }).notNull(),
+	body: text('body').notNull(),
+	metadata: json('metadata'),
+}, (table) => ({
+	idx_dbid: index('idx_mtrg_dbid').on(table.databaseId),
+}));
+
+// ---- (Optional) UI Builder Meta Tables ----
+export const metaPages = mysqlTable('meta_pages', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	projectId: bigint('project_id', { unsigned: true, mode: 'number' }).notNull(),
+	name: varchar('name', { length: 255 }),
+	layout: json('layout'), // e.g. JSON describing the layout/structure
+	metadata: json('metadata'),
+});
+
+export const metaPageComponents = mysqlTable('meta_page_components', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	pageId: bigint('page_id', { unsigned: true, mode: 'number' }).notNull(),
+	type: varchar('type', { length: 50 }), // form, table, chart, etc.
+	config: json('config'),
+	order: bigint('order', { unsigned: true, mode: 'number' }),
+});
+
+// ---- Deployment Tracking ----
+export const metaDeployments = mysqlTable('meta_deployments', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	objectType: varchar('object_type', { length: 32 }),
+	objectId: bigint('object_id', { unsigned: true, mode: 'number' }),
+	status: varchar('status', { length: 32 }),
+	deployedAt: timestamp('deployed_at').defaultNow(),
+	deployedSql: text('deployed_sql'),
+	error: text('error'),
+});
+export const metaDeploymentHistory = mysqlTable('meta_deployment_history', {
+	id: bigint('id', { mode: 'number', unsigned: true }).notNull().autoincrement().primaryKey(),
+	deploymentId: bigint('deployment_id', { unsigned: true, mode: 'number' }).notNull(),
+	status: varchar('status', { length: 32 }),
+	createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+	idx_deployment_id: index('idx_mdh_did').on(table.deploymentId),
+	fk_deployment_id: foreignKey({ name: 'fk_mdh_did', columns: [table.deploymentId], foreignColumns: [metaDeployments.id] }),
+}));
+
 export type Users = typeof users;
 export type UserCredentials = typeof userCredentials;
 export type UserVerifications = typeof userVerifications;
@@ -635,3 +771,14 @@ export type DbUserActivity = typeof dbUserActivity;
 export type DbSchemaExports = typeof dbSchemaExports;
 export type DbPrivileges = typeof dbPrivileges;
 export type MetaRegistry = typeof metaRegistry;
+export type MetaTables = typeof metaTables;
+export type MetaColumns = typeof metaColumns;
+export type MetaConstraints = typeof metaConstraints;
+export type MetaIndexes = typeof metaIndexes;
+export type MetaViews = typeof metaViews;
+export type MetaProcedures = typeof metaProcedures;
+export type MetaTriggers = typeof metaTriggers;
+export type MetaPages = typeof metaPages;
+export type MetaPageComponents = typeof metaPageComponents;
+export type MetaDeployments = typeof metaDeployments;
+export type MetaDeploymentHistory = typeof metaDeploymentHistory;
