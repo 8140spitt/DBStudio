@@ -6,14 +6,14 @@ const KEY_LENGTH = 64;
 const DIGEST = 'sha512';
 
 // Returns: salt:hash (Base64)
-export function hashPassword(password: string): string {
+export async function hashPassword(password: string): Promise<string> {
     const salt = randomBytes(SALT_LENGTH);
     const hash = pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST);
     return `${salt.toString('base64')}:${hash.toString('base64')}`;
 }
 
 // Checks password against stored string
-export function verifyPassword(password: string, stored: string): boolean {
+export async function verifyPassword(password: string, stored: string): Promise<boolean> {
     const [saltB64, hashB64] = stored.split(':');
     if (!saltB64 || !hashB64) return false;
 

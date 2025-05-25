@@ -7,3 +7,5 @@ export * from './projects';
 export * from './projectMembers';
 export * from './userSessions';
 export * from './userCredentials';
+export * from './workspaceSubscriptions';
+export * from './plans';

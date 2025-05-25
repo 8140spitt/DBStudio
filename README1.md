@@ -344,3 +344,99 @@ It fits the meta-driven/LEGO-style approach perfectly—users build *blocks* of 
 
 ---
 
+Absolutely! Here’s your **NuBlox MVP checklist** in a tick-off/to-do list style, **in sequential order**.
+
+---
+
+# ✅ NuBlox MVP Development Checklist
+
+### **⬜ 1. User Registration**
+
+* [ ] User registration form (username, email, password)
+* [ ] Password hashing & secure storage
+* [ ] Create user in `users` table
+* [ ] Store hash in `user_credentials`
+* [ ] Automatic login (session) on register
+
+---
+
+### **⬜ 2. Onboarding: Create Workspace**
+
+* [ ] Prompt new user to create a workspace (name, dialect)
+* [ ] Store workspace in `workspaces` table
+* [ ] Add user as owner in `workspace_members`
+* [ ] Redirect to workspace dashboard
+
+---
+
+### **⬜ 3. Onboarding: Create Project**
+
+* [ ] Prompt for new project inside workspace (name, dialect)
+* [ ] Store project in `projects` table (linked to workspace)
+* [ ] Add user as admin/owner in `project_members`
+* [ ] Redirect to project dashboard
+
+---
+
+### **⬜ 4. (Optional) Invite Users**
+
+* [ ] Invite more users by email (can skip MVP)
+
+---
+
+### **⬜ 5. Create Meta Database**
+
+* [ ] Allow user to create a logical (meta) database
+* [ ] Store in `meta_databases`
+* [ ] Link to workspace and project
+
+---
+
+### **⬜ 6. Meta Tables/Columns Designer**
+
+* [ ] Visual UI to add/edit/delete tables and columns
+* [ ] Store in `meta_tables` and `meta_columns`
+* [ ] Link to meta database
+
+---
+
+### **⬜ 7. DDL Code Generation & Sync**
+
+* [ ] Generate DDL from meta schema for selected SQL dialect
+* [ ] Deploy to real database (run DDL)
+* [ ] Show sync/deploy status
+
+---
+
+### **⬜ 8. Dynamic CRUD API & UI**
+
+* [ ] Auto-generate endpoints for each meta table
+* [ ] Scaffold Svelte CRUD forms/views from meta-columns
+
+---
+
+### **⬜ 9. Permissions, Business Logic, Extensions**
+
+* [ ] Define table/row permissions (roles, users)
+* [ ] Meta triggers, constraints, workflow logic
+* [ ] Extend meta model as needed
+
+---
+
+### **Project Hygiene**
+
+* [ ] Reusable Svelte components for forms, tables, cards, etc
+* [ ] Centralized CSS/theme and variables
+* [ ] API error handling and validation
+* [ ] E2E onboarding flow test
+
+---
+
+**How to use:**
+Check off each block as you implement it.
+Let me know when you’re ready for the next code drop, and I’ll walk you through it step-by-step.
+
+---
+
+**Ready to tackle “User Registration”?**
+Just say “next step” and I’ll deliver the API, form, and all logic!
