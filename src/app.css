@@ -7,62 +7,62 @@
 /* Color System */
 :root {
     /* Neutral (Grey) */
-    --me-neutral-950: #09090b;
-    --me-neutral-900: #1c1c21;
-    --me-neutral-800: #2f2f37;
-    --me-neutral-700: #4b4b58;
-    --me-neutral-600: #5e5e6e;
-    --me-neutral-500: #7b7b8e;
-    --me-neutral-400: #9191a1;
-    --me-neutral-300: #b2b2bd;
-    --me-neutral-200: #c8c8d0;
-    --me-neutral-100: #dedee2;
-    --me-neutral-50: #f4f4f6;
+    --nublox-neutral-950: #09090b;
+    --nublox-neutral-900: #1c1c21;
+    --nublox-neutral-800: #2f2f37;
+    --nublox-neutral-700: #4b4b58;
+    --nublox-neutral-600: #5e5e6e;
+    --nublox-neutral-500: #7b7b8e;
+    --nublox-neutral-400: #9191a1;
+    --nublox-neutral-300: #b2b2bd;
+    --nublox-neutral-200: #c8c8d0;
+    --nublox-neutral-100: #dedee2;
+    --nublox-neutral-50: #f4f4f6;
     /* Purple */
-    --me-purple-950: #070510;
-    --me-purple-900: #180f2f;
-    --me-purple-800: #2a184e;
-    --me-purple-700: #43277c;
-    --me-purple-600: #54319b;
-    --me-purple-500: #6f45c4;
-    --me-purple-400: #8764ce;
-    --me-purple-300: #ab92dd;
-    --me-purple-200: #c3b1e7;
-    --me-purple-100: #dbd0f1;
-    --me-purple-50: #f3effa;
+    --nublox-purple-950: #070510;
+    --nublox-purple-900: #180f2f;
+    --nublox-purple-800: #2a184e;
+    --nublox-purple-700: #43277c;
+    --nublox-purple-600: #54319b;
+    --nublox-purple-500: #6f45c4;
+    --nublox-purple-400: #8764ce;
+    --nublox-purple-300: #ab92dd;
+    --nublox-purple-200: #c3b1e7;
+    --nublox-purple-100: #dbd0f1;
+    --nublox-purple-50: #f3effa;
     /* Blue */
-    --me-blue-950: #060810;
-    --me-blue-900: #0f192f;
-    --me-blue-800: #182a4e;
-    --me-blue-700: #27437c;
-    --me-blue-600: #31549b;
-    --me-blue-500: #466fc4;
-    --me-blue-400: #6487ce;
-    --me-blue-300: #92abdd;
-    --me-blue-200: #b1c3e7;
-    --me-blue-100: #d0dbf0;
-    --me-blue-50: #eff3fa;
+    --nublox-blue-950: #060810;
+    --nublox-blue-900: #0f192f;
+    --nublox-blue-800: #182a4e;
+    --nublox-blue-700: #27437c;
+    --nublox-blue-600: #31549b;
+    --nublox-blue-500: #466fc4;
+    --nublox-blue-400: #6487ce;
+    --nublox-blue-300: #92abdd;
+    --nublox-blue-200: #b1c3e7;
+    --nublox-blue-100: #d0dbf0;
+    --nublox-blue-50: #eff3fa;
     /* Orange */
-    --me-orange-950: #140c00;
-    --me-orange-900: #3c2401;
-    --me-orange-800: #643d02;
-    --me-orange-700: #a06103;
-    --me-orange-600: #c87a04;
-    --me-orange-500: #fa9c0f;
-    --me-orange-400: #fbad37;
-    --me-orange-300: #fcc573;
-    --me-orange-200: #fdd69b;
-    --me-orange-100: #fee6c3;
-    --me-orange-50: #fff7eb;
+    --nublox-orange-950: #140c00;
+    --nublox-orange-900: #3c2401;
+    --nublox-orange-800: #643d02;
+    --nublox-orange-700: #a06103;
+    --nublox-orange-600: #c87a04;
+    --nublox-orange-500: #fa9c0f;
+    --nublox-orange-400: #fbad37;
+    --nublox-orange-300: #fcc573;
+    --nublox-orange-200: #fdd69b;
+    --nublox-orange-100: #fee6c3;
+    --nublox-orange-50: #fff7eb;
     /* Danger */
-    --me-danger-500: #dd2f2c;
-    --me-success-500: #96dd2c;
+    --nublox-danger-500: #dd2f2c;
+    --nublox-success-500: #96dd2c;
     /* Accent Brand */
-    --me-brand-primary: var(--me-purple-500);
-    --me-brand-accent: var(--me-orange-500);
-    --me-brand-blue: var(--me-blue-500);
-    --me-brand-bg: var(--me-neutral-800);
-    --me-brand-text: var(--me-neutral-100);
+    --nublox-brand-primary: var(--nublox-purple-500);
+    --nublox-brand-accent: var(--nublox-orange-500);
+    --nublox-brand-blue: var(--nublox-blue-500);
+    --nublox-brand-bg: var(--nublox-neutral-800);
+    --nublox-brand-text: var(--nublox-neutral-100);
 }
 
 /* === CSS Reset & Base === */
@@ -77,16 +77,16 @@
 }
 
 html {
-    color: var(--me-brand-text);
-    background: var(--me-brand-bg);
+    color: var(--nublox-brand-text);
+    background: var(--nublox-brand-bg);
     font-size: clamp(0.95rem, 0.7rem + 0.8vw, 1.1rem);
     font-family: 'Poppins', sans-serif;
     scroll-behavior: smooth;
 }
 
 body {
-    background: var(--me-brand-bg);
-    color: var(--me-brand-text);
+    background: var(--nublox-brand-bg);
+    color: var(--nublox-brand-text);
     min-height: 100vh;
     font-weight: 400;
     letter-spacing: 0.01em;
@@ -94,8 +94,8 @@ body {
 
 /* Selection */
 ::selection {
-    background: var(--me-purple-200);
-    color: var(--me-neutral-950);
+    background: var(--nublox-purple-200);
+    color: var(--nublox-neutral-950);
 }
 
 /* Headings */
@@ -107,7 +107,7 @@ h5,
 h6 {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    color: var(--me-brand-text);
+    color: var(--nublox-brand-text);
     letter-spacing: -0.03em;
 }
 
@@ -156,14 +156,14 @@ li {
 }
 
 a {
-    color: var(--me-brand-accent);
+    color: var(--nublox-brand-accent);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 a:hover,
 a:focus {
-    color: var(--me-orange-700);
+    color: var(--nublox-orange-700);
     text-decoration: underline;
 }
 
@@ -178,30 +178,30 @@ button {
     font-weight: 600;
     border: none;
     outline: none;
-    background: var(--me-brand-accent);
-    color: var(--me-neutral-950);
+    background: var(--nublox-brand-accent);
+    color: var(--nublox-neutral-950);
     border-radius: 0.5rem;
     padding: 0.65rem 1.5rem;
     transition: background 0.15s, box-shadow 0.15s;
     cursor: pointer;
-    box-shadow: 0 1px 3px 0 var(--me-neutral-900);
+    box-shadow: 0 1px 3px 0 var(--nublox-neutral-900);
 }
 
 button:active {
-    background: var(--me-orange-700);
+    background: var(--nublox-orange-700);
 }
 
 button:focus {
-    outline: 2px solid var(--me-blue-400);
+    outline: 2px solid var(--nublox-blue-400);
     outline-offset: 2px;
 }
 
 input,
 select,
 textarea {
-    border: 1px solid var(--me-neutral-700);
-    background: var(--me-neutral-900);
-    color: var(--me-brand-text);
+    border: 1px solid var(--nublox-neutral-700);
+    background: var(--nublox-neutral-900);
+    color: var(--nublox-brand-text);
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
@@ -214,56 +214,57 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: var(--me-blue-500);
+    border-color: var(--nublox-blue-500);
     outline: none;
 }
 
 input:disabled,
 select:disabled,
 textarea:disabled {
-    background: var(--me-neutral-800);
-    color: var(--me-neutral-400);
+    background: var(--nublox-neutral-800);
+    color: var(--nublox-neutral-400);
     cursor: not-allowed;
 }
 
 label {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 500;
     margin-bottom: 0.2rem;
-    color: var(--me-blue-200);
+    color: var(--nublox-blue-200);
     display: block;
 }
 
 /* Cards and Panels */
 .card {
-    background: var(--me-neutral-800);
+    background: var(--nublox-neutral-800);
     border-radius: 1.2rem;
-    box-shadow: 0 2px 16px 0 var(--me-neutral-950);
+    box-shadow: 0 2px 16px 0 var(--nublox-neutral-950);
     padding: 2rem;
     margin-bottom: 2rem;
 }
 
 .panel {
-    background: var(--me-neutral-900);
+    background: var(--nublox-neutral-900);
     border-radius: 1rem;
-    border: 1px solid var(--me-neutral-800);
+    border: 1px solid var(--nublox-neutral-800);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
 /* Forms */
 .form-group {
-    margin-bottom: 1.4rem;
+    display: grid;
+    gap: 0.4CAP;
 }
 
 .form-error {
-    color: var(--me-danger-500);
+    color: var(--nublox-danger-500);
     font-size: 0.95rem;
     margin-top: 0.15rem;
 }
 
 .form-success {
-    color: var(--me-success-500);
+    color: var(--nublox-success-500);
     font-size: 0.95rem;
     margin-top: 0.15rem;
 }
@@ -272,29 +273,29 @@ label {
 table {
     width: 100%;
     border-collapse: collapse;
-    background: var(--me-neutral-900);
-    color: var(--me-brand-text);
+    background: var(--nublox-neutral-900);
+    color: var(--nublox-brand-text);
     font-size: 1rem;
 }
 
 th,
 td {
     padding: 0.9rem 1.1rem;
-    border-bottom: 1px solid var(--me-neutral-800);
+    border-bottom: 1px solid var(--nublox-neutral-800);
 }
 
 th {
-    background: var(--me-blue-700);
-    color: var(--me-neutral-50);
+    background: var(--nublox-blue-700);
+    color: var(--nublox-neutral-50);
     font-weight: 700;
 }
 
 tr:hover {
-    background: var(--me-blue-900);
+    background: var(--nublox-blue-900);
 }
 
 thead {
-    border-bottom: 2px solid var(--me-blue-400);
+    border-bottom: 2px solid var(--nublox-blue-400);
 }
 
 /* Logo style (SVG as component or image) */
@@ -308,39 +309,39 @@ thead {
 
 /* Utility Classes */
 .bg-brand-primary {
-    background: var(--me-brand-primary) !important;
+    background: var(--nublox-brand-primary) !important;
 }
 
 .bg-brand-accent {
-    background: var(--me-brand-accent) !important;
+    background: var(--nublox-brand-accent) !important;
 }
 
 .bg-blue {
-    background: var(--me-brand-blue) !important;
+    background: var(--nublox-brand-blue) !important;
 }
 
 .bg-dark {
-    background: var(--me-neutral-950) !important;
+    background: var(--nublox-neutral-950) !important;
 }
 
 .text-brand {
-    color: var(--me-brand-primary) !important;
+    color: var(--nublox-brand-primary) !important;
 }
 
 .text-accent {
-    color: var(--me-brand-accent) !important;
+    color: var(--nublox-brand-accent) !important;
 }
 
 .text-blue {
-    color: var(--me-brand-blue) !important;
+    color: var(--nublox-brand-blue) !important;
 }
 
 .text-dark {
-    color: var(--me-neutral-950) !important;
+    color: var(--nublox-neutral-950) !important;
 }
 
 .text-light {
-    color: var(--me-neutral-100) !important;
+    color: var(--nublox-neutral-100) !important;
 }
 
 .rounded-xl {
@@ -348,7 +349,7 @@ thead {
 }
 
 .shadow-xl {
-    box-shadow: 0 4px 24px 0 var(--me-neutral-950) !important;
+    box-shadow: 0 4px 24px 0 var(--nublox-neutral-950) !important;
 }
 
 .global-wrapper {
@@ -357,7 +358,7 @@ thead {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--me-neutral-900);
+    background: var(--nublox-neutral-900);
 }
 
 .page-wrapper {
@@ -379,12 +380,12 @@ thead {
 }
 
 .modal {
-    background: var(--me-neutral-900);
+    background: var(--nublox-neutral-900);
     border-radius: 1.2rem;
     padding: 2rem 2.5rem;
     max-width: 480px;
     width: 100%;
-    box-shadow: 0 4px 32px 0 var(--me-neutral-950);
+    box-shadow: 0 4px 32px 0 var(--nublox-neutral-950);
     z-index: 100;
 }
 
@@ -393,11 +394,11 @@ thead {
     position: fixed;
     right: 2rem;
     bottom: 2rem;
-    background: var(--me-neutral-800);
-    color: var(--me-neutral-50);
+    background: var(--nublox-neutral-800);
+    color: var(--nublox-neutral-50);
     border-radius: 0.8rem;
     padding: 1rem 2rem;
-    box-shadow: 0 2px 8px 0 var(--me-neutral-950);
+    box-shadow: 0 2px 8px 0 var(--nublox-neutral-950);
     z-index: 99;
     animation: fadeIn 0.3s;
 }
@@ -418,16 +419,16 @@ thead {
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 12px;
-    background: var(--me-neutral-900);
+    background: var(--nublox-neutral-900);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--me-neutral-700);
+    background: var(--nublox-neutral-700);
     border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--me-blue-600);
+    background: var(--nublox-blue-600);
 }
 
 /* Responsive */
