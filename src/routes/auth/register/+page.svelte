@@ -1,34 +1,14 @@
 <script lang="ts">
 	import { userUIForms } from '$lib/utilities/validationSchemas';
+	import { validatePasswordWithDetails, passwordRequirementConfig } from '$lib/utilities/auth';
 	let formUi = $state(userUIForms.create);
 
 	// Define the allowed input keys (excluding non-input fields)
 	type InputKey = 'username' | 'password' | 'confirmPassword';
 	let inputs: InputKey[] = ['username', 'password', 'confirmPassword'];
 
-	const passwordRequirements = [
-		{ label: 'At least 14 characters', test: (v) => v.length >= 14 },
-		{ label: 'At least one uppercase letter', test: (v) => /[A-Z]/.test(v) },
-		{ label: 'At least one lowercase letter', test: (v) => /[a-z]/.test(v) },
-		{ label: 'At least one number', test: (v) => /[0-9]/.test(v) },
-		{ label: 'At least one special character ($@!%*?&)', test: (v) => /[$@!%*?&]/.test(v) }
-	];
-
-	export function getPasswordStrength(password) {
-		let passed = 0;
-		const results = passwordRequirements.map((req) => {
-			const ok = req.test(password);
-			if (ok) passed++;
-			return { label: req.label, ok };
-		});
-		return {
-			results,
-			score: passed / passwordRequirements.length,
-			allMet: passed === passwordRequirements.length
-		};
-	}
 	let password = $state('');
-	let strength = $derived(getPasswordStrength(password));
+	let strength = $derived(validatePasswordWithDetails(password, passwordRequirementConfig));
 
 	$inspect(password, strength);
 </script>
