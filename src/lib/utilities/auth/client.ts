@@ -1,5 +1,3 @@
-import { randomBytes, pbkdf2Sync, timingSafeEqual } from "crypto";
-
 /* ---------------- TYPES ---------------- */
 type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
@@ -69,16 +67,17 @@ const requirementSchemas: RequirementSchema[] = [
     },
     {
         key: "specialCount",
-        label: (v, cfg) => `At least ${v} special character${v > 1 ? "s" : ""} (${cfg.specialChars || "$@!%*?&"})`,
+        label: (v, cfg) => `At least ${v} special character${v > 1 ? "s" : ""} (${cfg.specialChars || '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'})`,
         test: (pw, v, cfg) => {
-            const chars = cfg.specialChars || "$@!%*?&";
-            const safe = chars.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+            const chars = cfg.specialChars || '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+            const safe = chars.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'); // Escape regex special chars
             return (pw.match(new RegExp(`[${safe}]`, 'g')) || []).length >= v;
         },
-        generator: (v, cfg) => [...(cfg.specialChars || "$@!%*?&")]
+        generator: (v, cfg) => [...(cfg.specialChars || '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')]
     }
     // Add more rules as needed!
 ];
+
 
 /* ------------ PASSWORD ENTROPY ------------ */
 /**
@@ -180,34 +179,6 @@ export function generateRandomPassword(config: PasswordRequirementConfig): strin
     return forced.join('');
 }
 
-/* ------------ HASHING / VERIFYING ------------ */
-
-const SALT_LENGTH = 16; // bytes
-const ITERATIONS = 100_000;
-const KEY_LENGTH = 64;
-const DIGEST = "sha512";
-
-/**
- * Returns "salt:hash" in base64, for storage.
- */
-export async function hashPassword(password: string): Promise<string> {
-    const salt = randomBytes(SALT_LENGTH);
-    const hash = pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST);
-    return `${salt.toString('base64')}:${hash.toString('base64')}`;
-}
-
-/**
- * Verifies a password against a stored salt:hash string.
- */
-export async function verifyPassword(password: string, stored: string): Promise<boolean> {
-    const [saltB64, hashB64] = stored.split(':');
-    if (!saltB64 || !hashB64) return false;
-    const salt = Buffer.from(saltB64, 'base64');
-    const hash = Buffer.from(hashB64, 'base64');
-    const verifyHash = pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST);
-    return timingSafeEqual(hash, verifyHash);
-}
-
 /* ------------ EXAMPLE USAGE ------------ */
 
 export const passwordRequirementConfig: StrictPasswordRequirementConfig = {
@@ -216,30 +187,30 @@ export const passwordRequirementConfig: StrictPasswordRequirementConfig = {
     lowercaseCount: 2,
     digitCount: 2,
     specialCount: 1,
-    specialChars: "#$%_",
+    // specialChars: "#$%_",
     bannedWords: ["password", "letmein", "NuBlox"],
     minEntropyBits: 60 // e.g. require at least 60 bits
 };
 
-// Show requirements (for UI, tooltip, etc.)
-const reqs = generatePasswordRequirements(passwordRequirementConfig);
-console.log("Requirements:", reqs.map(r => r.label));
+// // Show requirements (for UI, tooltip, etc.)
+// const reqs = generatePasswordRequirements(passwordRequirementConfig);
+// console.log("Requirements:", reqs.map(r => r.label));
 
-// Generate a valid password:
-const pw = generateRandomPassword(passwordRequirementConfig);
-console.log("Generated password:", pw);
+// // Generate a valid password:
+// const pw = generateRandomPassword(passwordRequirementConfig);
+// console.log("Generated password:", pw);
 
-// Validate and get detailed feedback:
-const result = validatePasswordWithDetails(pw, passwordRequirementConfig);
-console.log("Result:", result);
+// // Validate and get detailed feedback:
+// const result = validatePasswordWithDetails(pw, passwordRequirementConfig);
+// console.log("Result:", result);
 
-// Hash/verify example:
-(async () => {
-    const hash = await hashPassword(pw);
-    const ok = await verifyPassword(pw, hash);
-    console.log("Hash:", hash);
-    console.log("Verify:", ok);
-})();
+// // Hash/verify example:
+// (async () => {
+//     const hash = await hashPassword(pw);
+//     const ok = await verifyPassword(pw, hash);
+//     console.log("Hash:", hash);
+//     console.log("Verify:", ok);
+// })();
 
 /* 
 -- Want to add a new rule? --

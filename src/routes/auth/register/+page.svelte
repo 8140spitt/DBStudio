@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { userUIForms } from '$lib/utilities/validationSchemas';
-	import { validatePasswordWithDetails, passwordRequirementConfig } from '$lib/utilities/auth';
+	import {
+		validatePasswordWithDetails,
+		passwordRequirementConfig
+	} from '$lib/utilities/auth/client';
 	let formUi = $state(userUIForms.create);
 
 	// Define the allowed input keys (excluding non-input fields)
