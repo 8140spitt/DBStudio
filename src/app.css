@@ -6,64 +6,106 @@
 
 /* Color System */
 :root {
-    /* Neutral (Grey) */
-    --nublox-neutral-950: #09090b;
-    --nublox-neutral-900: #1c1c21;
-    --nublox-neutral-800: #2f2f37;
-    --nublox-neutral-700: #4b4b58;
-    --nublox-neutral-600: #5e5e6e;
-    --nublox-neutral-500: #7b7b8e;
-    --nublox-neutral-400: #9191a1;
-    --nublox-neutral-300: #b2b2bd;
-    --nublox-neutral-200: #c8c8d0;
-    --nublox-neutral-100: #dedee2;
-    --nublox-neutral-50: #f4f4f6;
-    /* Purple */
-    --nublox-purple-950: #070510;
-    --nublox-purple-900: #180f2f;
-    --nublox-purple-800: #2a184e;
-    --nublox-purple-700: #43277c;
-    --nublox-purple-600: #54319b;
-    --nublox-purple-500: #6f45c4;
-    --nublox-purple-400: #8764ce;
-    --nublox-purple-300: #ab92dd;
-    --nublox-purple-200: #c3b1e7;
-    --nublox-purple-100: #dbd0f1;
-    --nublox-purple-50: #f3effa;
-    /* Blue */
-    --nublox-blue-950: #060810;
-    --nublox-blue-900: #0f192f;
-    --nublox-blue-800: #182a4e;
-    --nublox-blue-700: #27437c;
-    --nublox-blue-600: #31549b;
-    --nublox-blue-500: #466fc4;
-    --nublox-blue-400: #6487ce;
-    --nublox-blue-300: #92abdd;
-    --nublox-blue-200: #b1c3e7;
-    --nublox-blue-100: #d0dbf0;
-    --nublox-blue-50: #eff3fa;
-    /* Orange */
-    --nublox-orange-950: #140c00;
-    --nublox-orange-900: #3c2401;
-    --nublox-orange-800: #643d02;
-    --nublox-orange-700: #a06103;
-    --nublox-orange-600: #c87a04;
-    --nublox-orange-500: #fa9c0f;
-    --nublox-orange-400: #fbad37;
-    --nublox-orange-300: #fcc573;
-    --nublox-orange-200: #fdd69b;
-    --nublox-orange-100: #fee6c3;
-    --nublox-orange-50: #fff7eb;
-    /* Danger */
-    --nublox-danger-500: #dd2f2c;
-    --nublox-success-500: #96dd2c;
-    /* Accent Brand */
-    --nublox-brand-primary: var(--nublox-purple-500);
-    --nublox-brand-accent: var(--nublox-orange-500);
-    --nublox-brand-blue: var(--nublox-blue-500);
-    --nublox-brand-bg: var(--nublox-neutral-800);
-    --nublox-brand-text: var(--nublox-neutral-100);
+    /* ELECTRIC BLUE */
+    --electric-blue-100: hsl(222, 80%, 95%);
+    --electric-blue-200: hsl(218, 85%, 85%);
+    --electric-blue-300: hsl(214, 90%, 75%);
+    --electric-blue-400: hsl(211, 95%, 60%);
+    --electric-blue-500: hsl(210, 100%, 56%);
+    --electric-blue-600: hsl(208, 105%, 40%);
+    --electric-blue-700: hsl(203, 110%, 30%);
+    --electric-blue-800: hsl(198, 115%, 20%);
+    --electric-blue-900: hsl(195, 120%, 10%);
+
+    /* CYBER PURPLE */
+    --cyber-purple-100: hsl(283, 61%, 95%);
+    --cyber-purple-200: hsl(279, 66%, 85%);
+    --cyber-purple-300: hsl(275, 71%, 75%);
+    --cyber-purple-400: hsl(272, 74%, 60%);
+    --cyber-purple-500: hsl(271, 76%, 53%);
+    --cyber-purple-600: hsl(269, 81%, 40%);
+    --cyber-purple-700: hsl(264, 86%, 30%);
+    --cyber-purple-800: hsl(259, 91%, 20%);
+    --cyber-purple-900: hsl(256, 96%, 10%);
+
+    /* NEON TEAL */
+    --neon-teal-100: hsl(180, 80%, 95%);
+    --neon-teal-200: hsl(176, 85%, 85%);
+    --neon-teal-300: hsl(172, 90%, 75%);
+    --neon-teal-400: hsl(169, 95%, 60%);
+    --neon-teal-500: hsl(168, 100%, 50%);
+    --neon-teal-600: hsl(166, 105%, 40%);
+    --neon-teal-700: hsl(161, 110%, 30%);
+    --neon-teal-800: hsl(156, 115%, 20%);
+    --neon-teal-900: hsl(153, 120%, 10%);
+
+    /* SLATE GRAY - Saturation low, no hue shift */
+    --slate-gray-100: hsl(180, 10%, 95%);
+    --slate-gray-200: hsl(180, 15%, 85%);
+    --slate-gray-300: hsl(180, 20%, 75%);
+    --slate-gray-400: hsl(180, 22%, 60%);
+    --slate-gray-500: hsl(180, 25%, 26%);
+    --slate-gray-600: hsl(180, 30%, 20%);
+    --slate-gray-700: hsl(180, 35%, 15%);
+    --slate-gray-800: hsl(180, 40%, 10%);
+    --slate-gray-900: hsl(180, 45%, 5%);
+
+    /* DARK CHARCOAL - Near black, no hue shift */
+    --dark-charcoal-100: hsl(0, 0%, 30%);
+    --dark-charcoal-200: hsl(0, 0%, 25%);
+    --dark-charcoal-300: hsl(0, 0%, 20%);
+    --dark-charcoal-400: hsl(0, 0%, 15%);
+    --dark-charcoal-500: hsl(0, 0%, 7%);
+    --dark-charcoal-600: hsl(0, 0%, 6%);
+    --dark-charcoal-700: hsl(0, 0%, 5%);
+    --dark-charcoal-800: hsl(0, 0%, 3%);
+    --dark-charcoal-900: hsl(0, 0%, 2%);
+
+    /* SOFT WHITE - Saturation low, no hue shift */
+    --soft-white-100: hsl(210, 10%, 99%);
+    --soft-white-200: hsl(210, 10%, 97%);
+    --soft-white-300: hsl(210, 10%, 94%);
+    --soft-white-400: hsl(210, 10%, 90%);
+    --soft-white-500: hsl(210, 10%, 85%);
+    --soft-white-600: hsl(210, 10%, 70%);
+    --soft-white-700: hsl(210, 10%, 55%);
+    --soft-white-800: hsl(210, 10%, 40%);
+    --soft-white-900: hsl(210, 10%, 25%);
+
+    /* Success Green */
+    --success-100: hsl(146, 46%, 95%);
+    --success-200: hsl(140, 51%, 85%);
+    --success-300: hsl(136, 56%, 75%);
+    --success-400: hsl(134, 59%, 60%);
+    --success-500: hsl(134, 61%, 40%);
+    --success-600: hsl(132, 66%, 35%);
+    --success-700: hsl(128, 71%, 28%);
+    --success-800: hsl(123, 76%, 20%);
+    --success-900: hsl(120, 81%, 12%);
+
+    /* Warning Yellow */
+    --warning-100: hsl(57, 85%, 95%);
+    --warning-200: hsl(50, 90%, 85%);
+    --warning-300: hsl(48, 95%, 75%);
+    --warning-400: hsl(45, 100%, 60%);
+    --warning-500: hsl(45, 100%, 50%);
+    --warning-600: hsl(43, 105%, 45%);
+    --warning-700: hsl(40, 110%, 38%);
+    --warning-800: hsl(35, 115%, 28%);
+    --warning-900: hsl(30, 120%, 18%);
+
+    /* Danger Red */
+    --danger-100: hsl(360, 55%, 95%);
+    --danger-200: hsl(355, 60%, 85%);
+    --danger-300: hsl(352, 65%, 75%);
+    --danger-400: hsl(350, 68%, 60%);
+    --danger-500: hsl(350, 70%, 50%);
+    --danger-600: hsl(348, 75%, 45%);
+    --danger-700: hsl(345, 80%, 38%);
+    --danger-800: hsl(340, 85%, 28%);
+    --danger-900: hsl(335, 90%, 18%);
 }
+
 
 /* === CSS Reset & Base === */
 *,
@@ -202,8 +244,7 @@ textarea {
     border: 1px solid var(--nublox-neutral-700);
     background: var(--nublox-neutral-900);
     color: var(--nublox-brand-text);
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
     margin-bottom: 1rem;
     width: 100%;
     font-family: inherit;
@@ -254,7 +295,33 @@ label {
 /* Forms */
 .form-group {
     display: grid;
+    grid-template-rows: repeat(3, auto);
     gap: 0.4CAP;
+    max-width: 60ch;
+}
+
+
+label {
+    text-transform: uppercase;
+    font-size: 0.875rem;
+
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+}
+
+.form-input-wrapper {
+    display: flex;
+    overflow: hidden;
+}
+
+.form-input-wrapper :first-child {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.form-input-wrapper :last-child {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
 }
 
 .form-error {
