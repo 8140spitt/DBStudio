@@ -17,81 +17,9 @@
 		return colors;
 	}
 
-	// Convert HEX to HSL
-	function hexToHSL(H) {
-		let r = 0,
-			g = 0,
-			b = 0;
-		if (H.length == 4) {
-			r = '0x' + H[1] + H[1];
-			g = '0x' + H[2] + H[2];
-			b = '0x' + H[3] + H[3];
-		} else if (H.length == 7) {
-			r = '0x' + H[1] + H[2];
-			g = '0x' + H[3] + H[4];
-			b = '0x' + H[5] + H[6];
-		}
-		r /= 255;
-		g /= 255;
-		b /= 255;
-		const cmin = Math.min(r, g, b);
-		const cmax = Math.max(r, g, b);
-		const delta = cmax - cmin;
-		let h = 0,
-			s = 0,
-			l = (cmax + cmin) / 2;
-
-		if (delta == 0) h = 0;
-		else if (cmax == r) h = ((g - b) / delta) % 6;
-		else if (cmax == g) h = (b - r) / delta + 2;
-		else h = (r - g) / delta + 4;
-
-		h = Math.round(h * 60);
-		if (h < 0) h += 360;
-
-		s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-		s = +(s * 100).toFixed(1);
-		l = +(l * 100).toFixed(1);
-
-		return { h, s, l };
-	}
-
 	// Clamp utility
 	function clamp(value, min, max) {
 		return Math.min(Math.max(value, min), max);
-	}
-
-	// Generate tints (lighter): increase lightness from baseL up to max 95%
-	function generateTints(H, S, baseL, steps) {
-		const tints = [];
-		for (let i = 1; i <= steps; i++) {
-			const factor = i / steps;
-			const L = clamp(baseL + factor * (95 - baseL), 0, 100);
-			tints.push(`hsl(${H}, ${S}%, ${Math.round(L)}%)`);
-		}
-		return tints;
-	}
-
-	// Generate tones (muted): decrease saturation from baseS down to min 10%
-	function generateTones(H, baseS, L, steps) {
-		const tones = [];
-		for (let i = 1; i <= steps; i++) {
-			const factor = i / steps;
-			const S = clamp(baseS - factor * (baseS - 10), 0, 100);
-			tones.push(`hsl(${H}, ${Math.round(S)}%, ${L}%)`);
-		}
-		return tones;
-	}
-
-	// Generate shades (darker): decrease lightness from baseL down to min 5%
-	function generateShades(H, S, baseL, steps) {
-		const shades = [];
-		for (let i = 1; i <= steps; i++) {
-			const factor = i / steps;
-			const L = clamp(baseL - factor * (baseL - 5), 0, 100);
-			shades.push(`hsl(${H}, ${S}%, ${Math.round(L)}%)`);
-		}
-		return shades;
 	}
 
 	// Inputs and reactive palette
@@ -115,15 +43,9 @@
 	]);
 
 	function updatePalettes() {
-		const { h, s, l } = hexToHSL(baseColor);
-		const baseHSL = `hsl(${h}, ${s}%, ${l}%)`;
-
-		tints = [
-			baseHSL, // Step 0: base color
-			...generateTints(h, s, l, steps)
-		];
-		tones = [baseHSL, ...generateTones(h, s, l, steps)];
-		shades = [baseHSL, ...generateShades(h, s, l, steps)];
+		tints = generateOklchSteps(baseColor, 'tint', steps);
+		tones = generateOklchSteps(baseColor, 'tone', steps);
+		shades = generateOklchSteps(baseColor, 'shade', steps);
 	}
 	onMount(updatePalettes);
 
