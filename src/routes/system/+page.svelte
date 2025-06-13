@@ -1,46 +1,70 @@
 <script>
 	import { onMount } from 'svelte';
 
-	import { formatHex, oklch } from 'culori';
+	import { formatHex, oklch, clampRgb } from 'culori';
+	import Loader from '$lib/components/UI/loader.svelte';
 
+	function clampOklch(l, c, h) {
+		const color = clampRgb({ mode: 'oklch', l, c, h });
+		return formatHex(color);
+	}
+
+	// Easing function for more natural, perceptually spaced steps
+	function easeInOut(t) {
+		return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+	}
+
+	// Generates n natural, even palette steps in OKLCH color space
 	function generateOklchSteps(hex, mode = 'tint', steps = 5) {
 		const base = oklch(hex);
-		const colors = [formatHex(base)];
+		const colors = [clampOklch(base.l, base.c, base.h)];
+		const maxLight = 0.96,
+			minLight = 0.08; // avoid pure white/black
+		const minChroma = 0.03;
+
 		for (let i = 1; i <= steps; i++) {
+			// Use eased t for natural gradation
+			const t = easeInOut(i / steps);
+
 			let l = base.l;
 			let c = base.c;
-			if (mode === 'tint') l = base.l + (1 - base.l) * (i / steps) * 0.85;
-			if (mode === 'shade') l = base.l - base.l * (i / steps) * 0.95;
-			if (mode === 'tone') c = base.c - base.c * (i / steps) * 0.85;
-			colors.push(formatHex({ mode: 'oklch', l, c, h: base.h }));
+
+			if (mode === 'tint') {
+				l = base.l + (maxLight - base.l) * t;
+				c = base.c * (1 - 0.5 * t); // fade a bit, not to gray
+			}
+			if (mode === 'shade') {
+				l = base.l - (base.l - minLight) * t;
+				c = base.c * (1 - 0.15 * t); // keep a little color in the darks
+			}
+			if (mode === 'tone') {
+				c = base.c - (base.c - minChroma) * t;
+				// Keep lightness about the same for tones
+			}
+
+			colors.push(clampOklch(l, c, base.h));
 		}
 		return colors;
 	}
 
-	// Clamp utility
-	function clamp(value, min, max) {
-		return Math.min(Math.max(value, min), max);
-	}
-
 	// Inputs and reactive palette
-	let baseColor = $state('#1e90ff');
+	let savedColors = $state([
+		'#424242',
+		'#8a2be2',
+		'#1e90ff',
+		'#00ffc8',
+		'#00fa92',
+		'#ff7d78',
+		'#fefc78',
+		'#75d5ff'
+	]);
+
+	let baseColor = $state('#8a2be2'); // Default to first saved color or fallback
 	let steps = $state(5);
 
 	let tints = $state([]);
 	let tones = $state([]);
 	let shades = $state([]);
-
-	let savedColors = $state([
-		'#1e90ff',
-		'#8a2be2',
-		'#00ffc8',
-		'#2f4f4f',
-		'#121212',
-		'#f5f7fa',
-		'#28a745',
-		'#ffc107',
-		'#dc3545'
-	]);
 
 	function updatePalettes() {
 		tints = generateOklchSteps(baseColor, 'tint', steps);
@@ -64,8 +88,6 @@
 	function removeSavedColor(color) {
 		savedColors = savedColors.filter((c) => c !== color);
 	}
-
-	$inspect(savedColors);
 </script>
 
 <main style="color: {baseColor};">
@@ -95,7 +117,13 @@
 		aria-label="Number of steps"
 		style="--border-clr: {baseColor};"
 	/>
-	<button type="button" onclick={saveCurrentColor} style="margin-bottom: 1rem;">
+	<button
+		type="button"
+		class="save-color-button"
+		aria-label="Save current base color"
+		onclick={saveCurrentColor}
+		style="margin-bottom: 1rem; background: {baseColor}; hover: {shades[shades.length - 1]};"
+	>
 		Save Base Color
 	</button>
 
@@ -133,19 +161,11 @@
 		<h2>Tints (Lighter)</h2>
 		<div class="palette">
 			{#each tints as color, i}
-				<div class="swatch" style="background-color: {color}" title={`Tint step ${i}: ${color}`}>
-					{i === 0 ? 'Base' : i}
-				</div>
-			{/each}
-		</div>
-	</section>
-
-	<section aria-label="Tones palette">
-		<h2>Tones (Muted)</h2>
-		<div class="palette">
-			{#each tones as color, i}
-				<div class="swatch" style="background-color: {color}" title={`Tone step ${i}: ${color}`}>
-					{i === 0 ? 'Base' : i}
+				<div class="swatch-container">
+					<div class="swatch" style="background-color: {color}" title={`Tint step ${i}: ${color}`}>
+						{i === 0 ? 'Base' : i}
+					</div>
+					<p>{color.toString()}</p>
 				</div>
 			{/each}
 		</div>
@@ -155,12 +175,33 @@
 		<h2>Shades (Darker)</h2>
 		<div class="palette">
 			{#each shades as color, i}
-				<div class="swatch" style="background-color: {color}" title={`Shade step ${i}: ${color}`}>
-					{i === 0 ? 'Base' : i}
+				<div class="swatch-container">
+					<div class="swatch" style="background-color: {color}" title={`Shade step ${i}: ${color}`}>
+						{i === 0 ? 'Base' : i}
+					</div>
+					<p>{color}</p>
 				</div>
 			{/each}
 		</div>
 	</section>
+
+	<section aria-label="Tones palette">
+		<h2>Tones (Muted)</h2>
+		<div class="palette">
+			{#each tones as color, i}
+				<div class="swatch-container">
+					<div class="swatch" style="background-color: {color}" title={`Tone step ${i}: ${color}`}>
+						{i === 0 ? 'Base' : i}
+					</div>
+					<p>{color}</p>
+				</div>
+			{/each}
+		</div>
+	</section>
+
+	<footer>
+		<p>Generated with ❤️ by NuBlox</p>
+	</footer>
 </main>
 
 <style>
@@ -197,9 +238,27 @@
 		gap: 0.5rem;
 		flex-wrap: wrap;
 	}
-	.swatch {
+	.swatch-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		flex: 1 1 60px;
 		height: 60px;
+		user-select: auto;
+	}
+
+	.swatch-container p {
+		margin-top: 0.25rem;
+		font-size: 0.8rem;
+		color: #333;
+		text-align: center;
+		max-width: 100px;
+		word-break: break-all;
+		font-weight: 500;
+	}
+	.swatch-container .swatch {
+		width: 100%;
+		height: 100%;
 		border-radius: 8px;
 		box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.15);
 		display: flex;
@@ -209,7 +268,6 @@
 		color: white;
 		text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
 		cursor: default;
-		user-select: none;
 	}
 
 	button[type='button'] {
@@ -286,5 +344,8 @@
 	}
 	.remove:hover {
 		background-color: #900;
+	}
+	.swatch-container p {
+		user-select: text !important;
 	}
 </style>
